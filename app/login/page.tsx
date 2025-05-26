@@ -1,7 +1,8 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Link from 'next/link';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import Field from '@/components/Field';
@@ -31,7 +32,7 @@ export default function Login() {
     password: '',
   };
 
-  const handleSubmit = async (values: LoginValues, { setFieldError, setSubmitting }: any) => {
+  const handleSubmit = async (values: LoginValues, { setFieldError, setSubmitting }: FormikHelpers<LoginValues>) => {
     try {
       await userService.login(values.email, values.password);
       router.push('/jobs');

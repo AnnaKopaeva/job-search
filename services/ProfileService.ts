@@ -8,15 +8,24 @@ interface ProfileData {
 
 class ProfileService {
   getLikedJobs(): string[] {
+    if (typeof window === 'undefined') {
+      return [];
+    }
     const likedJobs = localStorage.getItem("likedJobs");
     return likedJobs ? JSON.parse(likedJobs) : [];
   }
 
   toggleLikedJob(jobIds: string[]): void {
+    if (typeof window === 'undefined') {
+      return; 
+    }
     localStorage.setItem("likedJobs", JSON.stringify(jobIds));
   }
 
   setProfile(data: ProfileData): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
     try {
       const serializedValue = JSON.stringify(data);
       localStorage.setItem("profile", serializedValue);
@@ -26,6 +35,9 @@ class ProfileService {
   }
 
   getProfile(): ProfileData | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
     try {
       const serializedValue = localStorage.getItem("profile");
       return serializedValue ? JSON.parse(serializedValue) : null;
