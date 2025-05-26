@@ -28,7 +28,7 @@ export interface JobsSearchParams {
 const apiKey = process.env.NEXT_PUBLIC_RAPIDAPI_KEY || "";
 
 class JobsService {
-  private BASE_URL = "https://jsearch.p.rapidapi.com";
+  private BASE_URL = process.env.NEXT_PUBLIC_JSORT_API_URL;
 
   private async request<T>(
     url: string,
