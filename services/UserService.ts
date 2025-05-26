@@ -46,7 +46,11 @@ class UserService {
 
     if (!res.ok) {
       const error = await res.json().catch(() => ({}));
-      throw new Error(error.message || `${options.method || 'GET'} ${url} failed`);
+      throw {
+        message: error.message || `${options.method || 'GET'} ${url} failed`,
+        errors: error.errors || {},
+        status: res.status,
+      };
     }
 
     return res.json();

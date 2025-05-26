@@ -1,18 +1,24 @@
-import { useJobs } from "@/hooks/useGetJobs";
+"use client";
+
+import { useJobDetails } from "@/hooks/useJobDetails";
+import { profileService } from "@/services/ProfileService";
+import Cards from "@/components/Cards";
 
 export default function LikedPage() {
-  // const { jobs, isLoading, isError } = useJobs({ query: "web development jobs in chicago", page:1, num_pages:1 });
+  const ids = profileService.getLikedJobs();
 
-  // console.log('jobs', jobs);
+  const { data, isLoading, isError } = useJobDetails(ids.join(','));
+
+  if (isError) return <div className="text-center mt-8 text-red-500">Error loading liked jobs</div>;
+
+  if (!data?.job && !isLoading) {
+    return <div className="text-center mt-8">No liked jobs available.</div>;
+  }
 
   return (
-    <div>
-      Liked Job
-      {/* {isLoading ? (
-        <div className="skeleton mb-2 flex h-[282px] w-full items-center justify-center rounded-lg"></div>
-      ) : (
-        <div>content</div>
-      )} */}
+    <div className="m-8">
+      <h2 className="text-2xl font-bold text-gray-300 mb-4">Liked Jobs</h2>
+      <Cards data={data?.job || []} isLoading={isLoading} isError={isError} />
     </div>
   );
 }

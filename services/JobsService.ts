@@ -56,6 +56,9 @@ class JobsService {
   }
   
   async getJobDetails(id: string): Promise<{job: JobItemResponse[]}> {
+    if (!id) {
+      return { job: []}
+    }
     const res = await this.request<{data: JobItemResponse[]}>(`/job-details?job_id=${id}`);
     return { job: res.data };
   }

@@ -1,12 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useJobDetails } from "@/hooks/useJobDetails";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function JobDetailsPage({ params }: { params: { id: string } }) {
   const { id } = params;
+  const router = useRouter();
   const { data, isLoading, isError } = useJobDetails(id);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
@@ -16,6 +17,10 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
   if (!data?.job) {
     return <div className="text-center mt-8">No job details available.</div>;
   }
+
+  const handleBack = () => {
+    router.back();
+  };
 
   const {
     job_id,
@@ -30,9 +35,12 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md m-8">
-      <Link href="/jobs">
-        <span className="text-blue-500 hover:underline mb-4 inline-block">← Back to Jobs</span>
-      </Link>
+      <button
+        onClick={handleBack}
+        className="mb-4 text-blue-500 hover:underline"
+      >
+        ← Back
+      </button>
   
       <div className="flex items-center space-x-4 mb-6">
         {employer_logo ? (

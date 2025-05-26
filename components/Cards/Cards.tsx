@@ -1,7 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { JobItemResponse } from "@/services/JobsService";
 import CardSkeleton from "./CardSkeleton";
+import { profileService } from "@/services/ProfileService";
+import HeartIcon from "@/components/Icons/HeartIcon";
 
 interface CardsProps {
   data: JobItemResponse[] | null;
@@ -10,6 +15,18 @@ interface CardsProps {
 }
 
 export default function Cards({ data, isError, isLoading }: CardsProps) {
+  const [likedList, setLikedList] = useState(profileService.getLikedJobs());
+
+  const handleHeartClick = (jobId: string) => {
+    const isLiked = likedList.includes(jobId);
+    const updatedList = isLiked
+      ? likedList.filter((id) => id !== jobId)
+      : [...likedList, jobId];
+
+    setLikedList(updatedList);
+    profileService.toggleLikedJob(updatedList);
+  };
+
   if (isError && !isLoading) {
     return <span>Error in loading data, please enter search value.</span>
   }
@@ -21,10 +38,19 @@ export default function Cards({ data, isError, isLoading }: CardsProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-4 mt-6">
+    <div className="flex flex-col gap-4 mt-6">
       {!!data?.length ? 
         data.map(({ job_id, job_title, job_description, job_is_remote, job_location, job_posted_at_timestamp, employer_logo }) => (
-          <div key={job_id} className="max-w-64 p-4 bg-white shadow rounded-md flex flex-col justify-between">
+          <div
+            key={job_id}
+            className="w-1/2 mx-auto p-4 bg-white shadow rounded-md flex flex-col justify-between relative"
+          >
+            <div
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => handleHeartClick(job_id)}
+            >
+              <HeartIcon isLiked={likedList.includes(job_id)} />
+            </div>
             <div>
               <div className="flex items-center space-x-4 mb-4">
                 {employer_logo ? (
@@ -36,7 +62,7 @@ export default function Cards({ data, isError, isLoading }: CardsProps) {
                     className="h-12 w-12 object-cover rounded-full"
                   />
                 ) : (
-                  <div className=" h-12 w-12 bg-gray-300 rounded-full flex-shrink-0"></div>
+                  <div className="h-12 w-12 bg-gray-300 rounded-full flex-shrink-0"></div>
                 )}
                 <div>
                   <h2 className="text-lg text-gray-800 font-semibold">{job_title}</h2>
@@ -52,9 +78,16 @@ export default function Cards({ data, isError, isLoading }: CardsProps) {
             <div>
               <div className="flex items-center justify-between text-sm text-gray-500">
                 <span>{job_is_remote ? "Remote" : "On-site"}</span>
-                {job_posted_at_timestamp && <span>{new Date(job_posted_at_timestamp * 1000).toLocaleDateString()}</span>}
+                {job_posted_at_timestamp && (
+                  <span>{new Date(job_posted_at_timestamp * 1000).toLocaleDateString()}</span>
+                )}
               </div>
-              <Link href={`/job-details/${job_id}`} className="block mt-4 text-center bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Details</Link>
+              <Link
+                href={`/job-details/${job_id}`}
+                className="block mt-4 text-center bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+              >
+                Details
+              </Link>
             </div>
           </div>
         ))

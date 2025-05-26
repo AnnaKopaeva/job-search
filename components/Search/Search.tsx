@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-
 interface SearchProps {
   onSearch: (query: string) => void;
 }
@@ -17,12 +16,20 @@ export default function Search({ onSearch }: SearchProps) {
     onSearch(query);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === 'Return') {
+      e.preventDefault();
+      handleSearch();
+    }
+  };
+
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 max-w-96">
       <input
         type="text"
         value={query}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         placeholder="Search jobs..."
         className="border text-gray-800 border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
