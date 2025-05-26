@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Search Application
 
-## Getting Started
+This is a **Next.js 14** project for a job search application. The app allows users to search for jobs, view job details, like jobs, and manage their profile. It also includes an Express.js backend for authentication.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Frontend
+- **Job Search:**
+  - Users can search for jobs by title.
+  - Search results are displayed as a list of cards.
+- **Job Details:**
+  - Each job card has a "Details" button that navigates to `/job-details/:id`.
+  - The details page displays all job information, including title, image, description, and more.
+- **Liked Jobs:**
+  - Users can like jobs, which are stored in `LocalStorage`.
+  - Liked jobs are displayed on a separate page (`/liked`).
+  - Users can remove jobs from the liked list.
+- **Profile Management:**
+  - Users can create a profile on the `/create-profile` page.
+  - Profile includes:
+    - **Name** (input)
+    - **Desired Job Title** (input)
+    - **About Me** (textarea)
+  - Profile data is stored in `LocalStorage`.
+- **Job Recommendations:**
+  - On the `/jobs` page, users receive job recommendations based on their profile data.
+  - If no profile data exists, users can still search for jobs.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Backend
+- **Authentication:**
+  - A small Express.js app handles authentication (email + password).
+  - MongoDB (free cluster) is used to store user data.
+  - The backend can be deployed on Render (free tier).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
+This project uses the [JSearch API](https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch) for job data.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **API Limitations:**
+  - 200 requests per month (sufficient for 2-3 days of usage).
+- **Endpoints:**
+  - `/search` for job search.
+  - `/job-details/:id` for job details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/job-search.git
+   cd job-search
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Set up environment variables:
+   - Create a `.env` file in the root directory.
+   - Add the following variables:
+     ```env
+     NEXT_PUBLIC_RAPIDAPI_KEY=your_rapidapi_key
+     ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
