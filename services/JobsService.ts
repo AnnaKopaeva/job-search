@@ -25,7 +25,7 @@ export interface JobsSearchParams {
   num_pages: number;
 }
 
-const apiKey = process.env.NEXT_PUBLIC_RapidAPIKey || "";
+const apiKey = process.env.NEXT_PUBLIC_RAPIDAPI_KEY || "";
 
 class JobsService {
   private BASE_URL = "https://jsearch.p.rapidapi.com";
