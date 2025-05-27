@@ -11,6 +11,11 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -20,6 +25,12 @@ export default function Header() {
     router.push(path);
     setIsDropdownOpen(false);
   };
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace('/login');
+    }
+  }, [isAuthenticated, router]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,7 +45,7 @@ export default function Header() {
     };
   }, []);
 
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated() || !isClient) return null;
 
   return (
     <header className="bg-gray-900 text-white p-4 flex justify-between items-center shadow-md">

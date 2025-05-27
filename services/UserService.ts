@@ -94,7 +94,7 @@ class UserService {
     return this.token;
   }
 
-  isAuthenticated(): boolean {
+  isAuthenticated = (): boolean => {
     return !!this.token;
   }
 
