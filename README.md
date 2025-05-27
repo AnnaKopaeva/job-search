@@ -4,6 +4,12 @@ This is a **Next.js 14** project for a job search application. The app allows us
 
 ---
 
+## Deployed Application
+
+You can access the deployed application here: [Job Search App](https://job-search-nine-umber.vercel.app/login)
+
+---
+
 ## Features
 
 ### Frontend
